@@ -342,6 +342,9 @@ img { max-width: 100%; display: block; }
 .galeria__foto img { width: 100%; height: auto; opacity: 0; transition: opacity .5s ease; }
 .galeria__foto img.puesta { opacity: 1; }
 .galeria__foto:hover img { filter: brightness(1.04); }
+/* Foto que no pudo cargarse: hueco discreto, sin icono de imagen rota */
+.galeria__foto.fallo { cursor: default; }
+.galeria__foto.fallo img { display: none; }
 
 .album__pie {
   display: flex; gap: .7rem; justify-content: center; align-items: center;

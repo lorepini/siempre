@@ -158,7 +158,7 @@ SIEMPRE.mosaico = (() => {
     previa.decoding = 'async';
     const colocar = () => { img.src = ruta; img.classList.add('puesta'); };
     previa.onload = colocar;
-    previa.onerror = () => img.classList.add('puesta');
+    previa.onerror = () => { /* la tesela se queda en su color de fondo */ };
     previa.src = ruta;
     if (previa.complete) colocar();   // ya estaba en caché: cambio sin parpadeo
   }
