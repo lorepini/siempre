@@ -22,7 +22,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from jpeg_limpio import copia_limpia
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ORIGEN = os.path.join(os.path.dirname(RAIZ), "PHOTOS")
 MEDIOS = os.path.join(RAIZ, "medios")
 DATOS = os.path.join(RAIZ, "datos")
 
@@ -139,10 +138,17 @@ def procesa(tarea):
 
 def main():
     cfg = json.load(open(os.path.join(RAIZ, "contenido", "etapas.json"), encoding="utf-8"))
+    origen = cfg.get("origenFotos") or "../PHOTOS"
+    if not os.path.isabs(origen):
+        origen = os.path.normpath(os.path.join(RAIZ, origen))
+    if not os.path.isdir(origen):
+        raise SystemExit(f"No encuentro las fotografías en {origen}.\n"
+                         f"Corrige 'origenFotos' en contenido/etapas.json.")
+    print(f"Fotografías originales: {origen}")
     tareas, informe = [], {}
 
     for etapa in cfg["etapas"]:
-        carpeta = os.path.join(ORIGEN, etapa["carpetaOrigen"])
+        carpeta = os.path.join(origen, etapa["carpetaOrigen"])
         if not os.path.isdir(carpeta):
             print(f"  !! no existe {carpeta}"); continue
         vistos, elegidos, dup, corruptas = {}, [], 0, 0

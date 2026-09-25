@@ -48,8 +48,8 @@ SIEMPRE.album = (() => {
     } else {
       const p = document.createElement('p');
       p.className = 'pendiente';
-      p.textContent = `Carta pendiente de escribir — ${SIEMPRE.numero(etapa)}. `
-        + `Cuando la guardes en contenido/textos/${etapa.id}.txt aparecerá aquí.`;
+      p.textContent = SIEMPRE.cfg.album?.cartaPendiente
+        || 'Esta carta todavía está por escribir.';
       cartaCuerpo.appendChild(p);
     }
     cartaFirma.textContent = SIEMPRE.cfg.proyecto?.firma || '';

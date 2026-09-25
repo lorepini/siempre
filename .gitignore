@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+
+# Las cartas no se publican: son lo más personal del regalo.
+contenido/textos/*.txt

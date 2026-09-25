@@ -1,6 +1,9 @@
 {
   "_ayuda": "Este es el archivo que editas tú. Todo lo que aparece aquí se puede cambiar sin tocar el código. Después de editarlo no hace falta regenerar nada, salvo que cambies 'carpetaOrigen' o 'teselasObjetivo'.",
 
+  "_origenFotos": "Carpeta con las fotografías originales. Puede ser relativa a este proyecto o absoluta. Sólo la usan los guiones de preparación; la web no la necesita.",
+  "origenFotos": "/mnt/c/Users/pinil/OneDrive/Documentos/Lorena Pinillos/AP WEB/PHOTOS",
+
   "proyecto": {
     "titulo": "SIEMPRE",
     "destinataria": { "nombre": "Ana Paula", "apodo": "Sapito", "mostrar": "apodo" },
@@ -58,6 +61,7 @@
   "album": {
     "_nota": "cartaPosicion: 'inicio' = la carta abre la etapa y luego vienen las fotos (lo que pediste). 'final' = galería primero y carta al terminar.",
     "cartaPosicion": "inicio",
-    "tituloCarta": "Lo que quiero decirte de esta etapa"
+    "tituloCarta": "Lo que quiero decirte de esta etapa",
+    "cartaPendiente": "Esta carta todavía está por escribir."
   }
 }
