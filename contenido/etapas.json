@@ -1,0 +1,63 @@
+{
+  "_ayuda": "Este es el archivo que editas tú. Todo lo que aparece aquí se puede cambiar sin tocar el código. Después de editarlo no hace falta regenerar nada, salvo que cambies 'carpetaOrigen' o 'teselasObjetivo'.",
+
+  "proyecto": {
+    "titulo": "SIEMPRE",
+    "destinataria": { "nombre": "Ana Paula", "apodo": "Sapito", "mostrar": "apodo" },
+    "portada": {
+      "frase": "Siete etapas. Siete años. Para siempre.",
+      "indicacion": "Acércate para descubrir nuestros recuerdos.",
+      "textoIntro": ""
+    },
+    "cierre": {
+      "titulo": "",
+      "texto": ""
+    },
+    "firma": ""
+  },
+
+  "aspecto": {
+    "fondo": "#F7F1E8",
+    "fondoHondo": "#EFE6D9",
+    "tinta": "#241F1C",
+    "tintaSuave": "#6B6058",
+    "acento": "#7A2233",
+    "acentoSuave": "#A8596A",
+    "tipografiaTitulos": "\"Cormorant Garamond\", Georgia, \"Times New Roman\", serif",
+    "tipografiaTexto": "\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "veloColorLejos": 0.0
+  },
+
+  "mosaico": {
+    "_nota": "teselasObjetivo es orientativo: la M siempre tendrá más que la I porque tiene más superficie.",
+    "teselasObjetivo": 100,
+    "separacionLetras": 0.14,
+    "huecoEntreTeselas": 0.055,
+    "semilla": 7
+  },
+
+  "audio": {
+    "_nota": "Motor de audio. 'youtube' usa enlaces (sin subir archivos con copyright). 'archivo' usa mp3 locales en contenido/musica/.",
+    "motor": "youtube",
+    "volumen": 0.55,
+    "repetir": true,
+    "fundidoMs": 1200,
+    "arrancaEn": "fotos"
+  },
+
+  "etapas": [
+    { "id": "etapa-01", "orden": 1, "letra": "S", "nombre": "", "fechas": "", "carpetaOrigen": "18-19", "acento": "", "cancion": { "titulo": "", "artista": "", "youtube": "", "archivo": "" }, "favoritas": [], "excluirDelMosaico": [], "recortes": {} },
+    { "id": "etapa-02", "orden": 2, "letra": "I", "nombre": "", "fechas": "", "carpetaOrigen": "20-21", "acento": "", "cancion": { "titulo": "", "artista": "", "youtube": "", "archivo": "" }, "favoritas": [], "excluirDelMosaico": [], "recortes": {} },
+    { "id": "etapa-03", "orden": 3, "letra": "E", "nombre": "", "fechas": "", "carpetaOrigen": "21-22", "acento": "", "cancion": { "titulo": "", "artista": "", "youtube": "", "archivo": "" }, "favoritas": [], "excluirDelMosaico": [], "recortes": {} },
+    { "id": "etapa-04", "orden": 4, "letra": "M", "nombre": "", "fechas": "", "carpetaOrigen": "22-23", "acento": "", "cancion": { "titulo": "", "artista": "", "youtube": "", "archivo": "" }, "favoritas": [], "excluirDelMosaico": [], "recortes": {} },
+    { "id": "etapa-05", "orden": 5, "letra": "P", "nombre": "", "fechas": "", "carpetaOrigen": "23-24", "acento": "", "cancion": { "titulo": "", "artista": "", "youtube": "", "archivo": "" }, "favoritas": [], "excluirDelMosaico": [], "recortes": {} },
+    { "id": "etapa-06", "orden": 6, "letra": "R", "nombre": "", "fechas": "", "carpetaOrigen": "24-25", "acento": "", "cancion": { "titulo": "", "artista": "", "youtube": "", "archivo": "" }, "favoritas": [], "excluirDelMosaico": [], "recortes": {} },
+    { "id": "etapa-07", "orden": 7, "letra": "E", "nombre": "", "fechas": "", "carpetaOrigen": "25-26", "acento": "", "cancion": { "titulo": "", "artista": "", "youtube": "", "archivo": "" }, "favoritas": [], "excluirDelMosaico": [], "recortes": {} }
+  ],
+
+  "album": {
+    "_nota": "cartaPosicion: 'inicio' = la carta abre la etapa y luego vienen las fotos (lo que pediste). 'final' = galería primero y carta al terminar.",
+    "cartaPosicion": "inicio",
+    "tituloCarta": "Lo que quiero decirte de esta etapa"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "etapa-01": {
+    "carpeta": "18-19",
+    "unicas": 22,
+    "duplicados_omitidos": 4,
+    "ilegibles": 0
+  },
+  "etapa-02": {
+    "carpeta": "20-21",
+    "unicas": 40,
+    "duplicados_omitidos": 2,
+    "ilegibles": 0
+  },
+  "etapa-03": {
+    "carpeta": "21-22",
+    "unicas": 39,
+    "duplicados_omitidos": 4,
+    "ilegibles": 0
+  },
+  "etapa-04": {
+    "carpeta": "22-23",
+    "unicas": 88,
+    "duplicados_omitidos": 23,
+    "ilegibles": 0
+  },
+  "etapa-05": {
+    "carpeta": "23-24",
+    "unicas": 272,
+    "duplicados_omitidos": 76,
+    "ilegibles": 0
+  },
+  "etapa-06": {
+    "carpeta": "24-25",
+    "unicas": 174,
+    "duplicados_omitidos": 41,
+    "ilegibles": 0
+  },
+  "etapa-07": {
+    "carpeta": "25-26",
+    "unicas": 135,
+    "duplicados_omitidos": 11,
+    "ilegibles": 0
+  }
+}

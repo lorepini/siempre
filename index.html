@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>SIEMPRE</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/siempre.css">
+</head>
+<body>
+
+<!-- ───── Puerta de entrada ───── -->
+<div id="puerta" class="puerta">
+  <div class="puerta__caja">
+    <p class="puerta__frase" id="puertaFrase"></p>
+    <p class="puerta__intro" id="puertaIntro"></p>
+    <div class="puerta__botones">
+      <button type="button" id="btnConMusica" class="boton boton--principal">Empezar con música</button>
+      <button type="button" id="btnSinMusica" class="boton">Explorar sin sonido</button>
+    </div>
+    <p class="puerta__nota" id="puertaIndicacion"></p>
+  </div>
+</div>
+
+<!-- ───── Mosaico ───── -->
+<main id="escena" class="escena" aria-label="La palabra SIEMPRE formada con fotografías">
+  <div id="lienzo" class="lienzo">
+    <div id="mundo" class="mundo"></div>
+  </div>
+
+  <div id="rotulo" class="rotulo" hidden>
+    <p class="rotulo__etapa" id="rotuloEtapa"></p>
+    <p class="rotulo__nombre" id="rotuloNombre"></p>
+    <button type="button" class="boton boton--principal" id="rotuloEntrar">Entrar al álbum</button>
+  </div>
+
+  <p class="indicacion" id="indicacion" aria-live="polite"></p>
+
+  <div class="controles" role="toolbar" aria-label="Controles del mosaico">
+    <button type="button" id="btnAlejar" class="icono" aria-label="Alejar">−</button>
+    <button type="button" id="btnAcercar" class="icono" aria-label="Acercar">+</button>
+    <button type="button" id="btnVerTodo" class="icono icono--ancho">Ver todo</button>
+    <button type="button" id="btnEtapas" class="icono icono--ancho" aria-haspopup="true" aria-expanded="false">Etapas</button>
+    <button type="button" id="btnSonido" class="icono" aria-label="Sonido" aria-pressed="false">♪</button>
+  </div>
+
+  <!-- Acceso a las etapas sin depender del zoom -->
+  <nav id="listaEtapas" class="lista-etapas" hidden aria-label="Ir a una etapa">
+    <ul id="listaEtapasUl"></ul>
+  </nav>
+</main>
+
+<!-- ───── Álbum de una etapa ───── -->
+<section id="album" class="album" hidden aria-label="Álbum de la etapa" tabindex="-1">
+  <header class="album__cabecera">
+    <button type="button" id="albumVolver" class="boton boton--discreto">← Volver a SIEMPRE</button>
+    <div class="album__identidad">
+      <span class="album__letra" id="albumLetra"></span>
+      <span class="album__titulo" id="albumTitulo"></span>
+      <span class="album__fechas" id="albumFechas"></span>
+    </div>
+    <div class="album__musica" id="albumMusica" hidden>
+      <button type="button" id="musicaPlay" class="icono" aria-label="Reproducir o pausar">▶</button>
+      <span class="album__pista" id="musicaPista"></span>
+      <button type="button" id="musicaMute" class="icono" aria-label="Silenciar">🔇</button>
+      <input type="range" id="musicaVolumen" min="0" max="100" step="1" aria-label="Volumen">
+    </div>
+  </header>
+
+  <article class="carta" id="carta">
+    <h2 class="carta__titulo" id="cartaTitulo"></h2>
+    <div class="carta__cuerpo" id="cartaCuerpo"></div>
+    <p class="carta__firma" id="cartaFirma"></p>
+    <button type="button" class="boton boton--principal" id="cartaSeguir">Ver las fotos</button>
+  </article>
+
+  <div class="galeria" id="galeria"></div>
+
+  <footer class="album__pie">
+    <button type="button" id="irCarta" class="boton boton--discreto">Ir a la carta</button>
+    <button type="button" id="albumSiguiente" class="boton boton--principal"></button>
+    <button type="button" id="albumMosaico" class="boton boton--discreto">Volver a SIEMPRE</button>
+  </footer>
+</section>
+
+<!-- ───── Visor de fotos ───── -->
+<div id="visor" class="visor" hidden role="dialog" aria-modal="true" aria-label="Fotografía">
+  <button type="button" id="visorCerrar" class="visor__cerrar" aria-label="Cerrar (Escape)">✕</button>
+  <button type="button" id="visorAnterior" class="visor__paso visor__paso--izq" aria-label="Anterior">‹</button>
+  <figure class="visor__marco">
+    <img id="visorImagen" alt="">
+    <figcaption id="visorPie" class="visor__pie"></figcaption>
+  </figure>
+  <button type="button" id="visorSiguiente" class="visor__paso visor__paso--der" aria-label="Siguiente">›</button>
+  <p class="visor__contador" id="visorContador"></p>
+</div>
+
+<!-- ───── Cierre del recorrido ───── -->
+<section id="cierre" class="cierre" hidden tabindex="-1" aria-label="Final del recorrido">
+  <div class="cierre__caja">
+    <h2 id="cierreTitulo"></h2>
+    <div id="cierreTexto"></div>
+    <button type="button" class="boton boton--principal" id="cierreVolver">Volver a SIEMPRE</button>
+  </div>
+</section>
+
+<div id="reproductorAudio" class="oculto" aria-hidden="true"></div>
+
+<script src="assets/js/datos.js"></script>
+<script src="assets/js/audio.js"></script>
+<script src="assets/js/mosaico.js"></script>
+<script src="assets/js/visor.js"></script>
+<script src="assets/js/album.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
