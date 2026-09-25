@@ -111,9 +111,12 @@ SIEMPRE.mosaico = (() => {
 
     M.letras.slice().sort((a, b) => a.orden - b.orden).forEach((l) => {
       const etapa = SIEMPRE.etapa(l.id);
-      const nodo = document.createElement('button');
-      nodo.type = 'button';
+      // Un <button> no puede contener <div>, y las teselas lo son. Se usa un
+      // div con papel de botón, que sí es válido y sigue siendo accesible.
+      const nodo = document.createElement('div');
       nodo.className = 'letra';
+      nodo.setAttribute('role', 'button');
+      nodo.tabIndex = 0;
       nodo.style.width = l.ancho + 'px';
       nodo.style.height = l.alto + 'px';
       nodo.dataset.etapa = l.id;
@@ -320,6 +323,10 @@ SIEMPRE.mosaico = (() => {
   function conectarGestos() {
     const punteros = new Map();
     let arrastrando = false, movido = 0, inicio = null, pellizco = null;
+    // Al capturar el puntero para poder arrastrar, el navegador dirige el
+    // 'click' a la escena y no a la letra. Por eso se guarda sobre qué se
+    // apoyó el dedo: eso, y no el destino del clic, es lo que ella tocó.
+    let apoyadoEn = null;
 
     // La barra de controles, la lista de etapas y el rótulo flotan por encima
     // del mosaico: ahí no se arrastra ni se captura el puntero, o sus botones
@@ -329,6 +336,7 @@ SIEMPRE.mosaico = (() => {
     escena.addEventListener('pointerdown', (ev) => {
       if (ev.button !== undefined && ev.button !== 0) return;
       if (esMando(ev.target)) return;
+      apoyadoEn = ev.target;
       punteros.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
       if (punteros.size === 1) {
         arrastrando = true; movido = 0;
@@ -380,10 +388,11 @@ SIEMPRE.mosaico = (() => {
       if (esMando(ev.target)) return;
       if (movido > ARRASTRE_MINIMO) { ev.stopPropagation(); ev.preventDefault(); movido = 0; return; }
       movido = 0;
-      const letraNodo = ev.target.closest('.letra');
+      const tocado = apoyadoEn && apoyadoEn.closest ? apoyadoEn : ev.target;
+      const letraNodo = tocado.closest('.letra');
       if (!letraNodo) return;
       const etapaId = letraNodo.dataset.etapa;
-      const tesela = ev.target.closest('.tesela');
+      const tesela = tocado.closest('.tesela');
       if (vista === 'cerca' && tesela && tesela.dataset.foto) {
         alAbrirFoto(etapaId, tesela.dataset.foto);
       } else {
@@ -402,6 +411,15 @@ SIEMPRE.mosaico = (() => {
       if (esMando(ev.target)) return;
       ev.preventDefault();
       zoomEn(ev.clientX, ev.clientY, 1.9);
+    });
+
+    // Enter y Espacio sobre una letra entran en su etapa.
+    mundo.addEventListener('keydown', (ev) => {
+      if (ev.key !== 'Enter' && ev.key !== ' ' && ev.key !== 'Spacebar') return;
+      const letraNodo = ev.target.closest?.('.letra');
+      if (!letraNodo) return;
+      ev.preventDefault();
+      alEntrar(letraNodo.dataset.etapa);
     });
 
     window.addEventListener('resize', () => {
