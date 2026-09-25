@@ -39,21 +39,16 @@ def main():
             pg.screenshot(path=f"{CAPTURAS}/{etiqueta}-1-puerta.png")
             pasos.append(f"{etiqueta}: portada cargada")
 
-            bytes_vistos = {"n": 0, "img": 0}
-            def suma(resp):
-                try:
-                    largo = int(resp.header_value("content-length") or 0)
-                except Exception:
-                    largo = 0
-                bytes_vistos["n"] += largo
-                if "/medios/" in resp.url:
-                    bytes_vistos["img"] += largo
-            pg.on("response", suma)
-
             pg.click("#btnSinMusica")
             pg.wait_for_timeout(2500)
-            pasos.append(f"{etiqueta}: primer vistazo = {bytes_vistos['n']/1e6:.1f} MB "
-                         f"({bytes_vistos['img']/1e6:.1f} MB de fotos)")
+            pesado = pg.evaluate("""() => {
+              const r = performance.getEntriesByType('resource');
+              const suma = (f) => r.filter(f).reduce((a, x) => a + (x.transferSize || x.encodedBodySize || 0), 0);
+              return { total: suma(() => true), fotos: suma(x => x.name.includes('/medios/')),
+                       peticiones: r.length };
+            }""")
+            pasos.append(f"{etiqueta}: primer vistazo = {pesado['total']/1e6:.1f} MB en "
+                         f"{pesado['peticiones']} peticiones ({pesado['fotos']/1e6:.1f} MB de fotografías)")
             pg.screenshot(path=f"{CAPTURAS}/{etiqueta}-2-mosaico.png")
             n = pg.eval_on_selector_all(".tesela", "e => e.length")
             cargadas = pg.eval_on_selector_all(".tesela img.puesta", "e => e.length")
