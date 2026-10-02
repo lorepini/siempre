@@ -434,3 +434,217 @@ img { max-width: 100%; display: block; }
     transition-duration: .01ms !important;
   }
 }
+
+/* ───────────────────────────────────────────────────────────
+   LA ENTRADA: un sobre cerrado que se abre y da paso a la carta
+   ─────────────────────────────────────────────────────────── */
+
+.entrada {
+  position: fixed; inset: 0; z-index: 60;
+  background: var(--fondo);
+  display: grid;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.entrada.se-va { animation: entrada-sale .75s ease forwards; }
+@keyframes entrada-sale { to { opacity: 0; visibility: hidden; } }
+
+/* ── El sobre ── */
+.sobre-escena {
+  grid-area: 1 / 1;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(1.6rem, 5vw, 2.6rem);
+  padding: calc(28px + var(--seguro-arriba)) 22px calc(28px + var(--seguro-abajo));
+  min-height: 100%;
+  animation: asoma-sobre 1.1s ease both;
+}
+@keyframes asoma-sobre { from { opacity: 0; transform: translateY(14px); } }
+.sobre-escena.se-abre { animation: sobre-se-va .7s ease .95s forwards; }
+@keyframes sobre-se-va { to { opacity: 0; transform: scale(1.06); visibility: hidden; } }
+
+.sobre__para {
+  margin: 0;
+  font-family: var(--tipo-titulo);
+  font-size: clamp(1.25rem, 4.2vw, 1.75rem);
+  color: var(--tinta-suave);
+  letter-spacing: .01em;
+  text-align: center;
+}
+.sobre__para:empty { display: none; }
+
+.sobre {
+  position: relative;
+  width: min(380px, 76vw);
+  aspect-ratio: 3 / 2;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 1100px;
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+.sobre:hover { transform: translateY(-6px); }
+.sobre:active { transform: translateY(-2px); }
+.sobre.abierto { cursor: default; }
+
+/* Cuerpo del sobre: el papel de atrás */
+.sobre__frente, .sobre__solapa, .sobre__hoja { position: absolute; }
+
+.sobre__frente {
+  inset: 0;
+  background: linear-gradient(170deg, #FBF6EF 0%, #F2E8DA 100%);
+  border: 1px solid rgba(36, 31, 28, .13);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(36, 31, 28, .06), 0 18px 44px rgba(36, 31, 28, .13);
+  z-index: 3;
+  /* Los dos pliegues diagonales del frente de un sobre */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+.sobre__frente::before, .sobre__frente::after {
+  content: "";
+  position: absolute; bottom: 0;
+  width: 52%; height: 100%;
+  background: linear-gradient(135deg, rgba(36, 31, 28, .05), transparent 62%);
+}
+.sobre__frente::before { left: 0; clip-path: polygon(0 100%, 100% 100%, 0 0); }
+.sobre__frente::after  { right: 0; clip-path: polygon(100% 100%, 0 100%, 100% 0); }
+
+/* La hoja que asoma al abrirse */
+.sobre__hoja {
+  left: 7%; right: 7%; top: 10%;
+  height: 86%;
+  background: #FFFCF7;
+  border: 1px solid rgba(36, 31, 28, .1);
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 -2px 10px rgba(36, 31, 28, .07);
+  z-index: 2;
+  transform: translateY(0);
+}
+.sobre.abierto .sobre__hoja { animation: hoja-sale 1s cubic-bezier(.3, .9, .3, 1) .42s both; }
+@keyframes hoja-sale {
+  to { transform: translateY(-46%) scale(1.03); z-index: 5; }
+}
+
+/* La solapa triangular */
+.sobre__solapa {
+  left: 0; right: 0; top: 0;
+  height: 62%;
+  background: linear-gradient(185deg, #F6EDE1 0%, #EADFCE 100%);
+  border-radius: 4px 4px 0 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  z-index: 4;
+  box-shadow: 0 2px 5px rgba(36, 31, 28, .07);
+}
+.sobre.abierto .sobre__solapa { animation: solapa-abre .85s cubic-bezier(.5, 0, .2, 1) .12s both; }
+@keyframes solapa-abre {
+  60%  { transform: rotateX(-150deg); z-index: 4; }
+  100% { transform: rotateX(-178deg); z-index: 1; }
+}
+
+/* El sello */
+.sobre__sello {
+  position: absolute;
+  left: 50%; top: 56%;
+  width: 54px; height: 54px;
+  margin: -27px 0 0 -27px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, var(--acento-suave), var(--acento) 68%);
+  box-shadow: 0 2px 7px rgba(36, 31, 28, .26), inset 0 -2px 5px rgba(0, 0, 0, .17);
+  z-index: 6;
+  display: grid; place-items: center;
+}
+.sobre__sello::after {
+  content: "S";
+  font-family: var(--tipo-titulo);
+  font-size: 1.6rem;
+  line-height: 1;
+  color: #FFF6EE;
+  opacity: .92;
+}
+.sobre.abierto .sobre__sello { animation: sello-cae .5s ease both; }
+@keyframes sello-cae {
+  to { opacity: 0; transform: translateY(12px) scale(.82) rotate(-11deg); }
+}
+
+.sobre__pista {
+  margin: 0;
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  opacity: .8;
+  text-align: center;
+  animation: late 3.4s ease-in-out infinite;
+}
+.sobre__pista:empty { display: none; }
+@keyframes late { 50% { opacity: .42; } }
+
+/* ── La carta ── */
+.carta-entrada {
+  grid-area: 1 / 1;
+  padding: calc(clamp(3rem, 11vh, 6rem) + var(--seguro-arriba)) 0 calc(3rem + var(--seguro-abajo));
+  animation: carta-llega 1.1s cubic-bezier(.22, 1, .36, 1) both;
+}
+@keyframes carta-llega { from { opacity: 0; transform: translateY(26px); } }
+
+.carta-entrada__hoja {
+  max-width: 38rem;
+  margin: 0 auto;
+  padding: 0 clamp(22px, 7vw, 36px);
+}
+.carta-entrada__titulo {
+  font-family: var(--tipo-titulo);
+  font-weight: 500;
+  font-size: clamp(1.7rem, 5.5vw, 2.5rem);
+  line-height: 1.2;
+  margin: 0 0 2rem;
+  text-wrap: balance;
+}
+.carta-entrada__titulo:empty { display: none; }
+
+.carta-entrada__cuerpo {
+  font-family: var(--tipo-titulo);
+  font-size: clamp(1.1rem, 2.6vw, 1.22rem);
+  line-height: 1.82;
+  color: var(--tinta);
+}
+.carta-entrada__cuerpo p { margin: 0 0 1.5em; }
+/* La primera línea entra un poco más grande: es la puerta del texto */
+.carta-entrada__cuerpo p:first-child { font-size: 1.06em; }
+/* Si el último párrafo es muy corto, se lee como una despedida */
+.carta-entrada__cuerpo p.despedida {
+  margin-top: 2.4em;
+  font-size: 1.25em;
+  color: var(--acento);
+  line-height: 1.5;
+}
+
+.carta-entrada__firma {
+  font-family: var(--tipo-titulo);
+  font-size: 1.3rem;
+  color: var(--acento);
+  margin: 2.2rem 0 0;
+}
+.carta-entrada__firma:empty { display: none; }
+
+.carta-entrada__pie {
+  margin-top: clamp(3rem, 9vw, 4.5rem);
+  padding-top: clamp(2rem, 6vw, 3rem);
+  border-top: 1px solid rgba(36, 31, 28, .12);
+  display: flex;
+  justify-content: center;
+}
+.carta-entrada__pie .boton { font-size: 1rem; padding: .85em 2.2em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sobre-escena, .carta-entrada, .sobre__pista,
+  .sobre.abierto .sobre__solapa, .sobre.abierto .sobre__hoja,
+  .sobre.abierto .sobre__sello { animation: none !important; }
+  .sobre.abierto .sobre__solapa { transform: rotateX(-178deg); }
+}

@@ -7,6 +7,7 @@ const SIEMPRE = {
   fotos: null,
   mosaicoDatos: null,
   textos: Object.create(null),
+  cartaPrincipal: null,
   avisos: [],
 
   async cargar() {
@@ -20,7 +21,39 @@ const SIEMPRE = {
       pide('datos/fotos.json'),
       pide('datos/mosaico.json'),
     ]);
+    this.cartaPrincipal = await this.leeTexto('contenido/carta.txt');
     this.aplicarPaleta();
+  },
+
+  /** Lee un archivo de texto. Devuelve null si no existe o está vacío. */
+  async leeTexto(ruta) {
+    try {
+      const r = await fetch(ruta, { cache: 'no-cache' });
+      if (!r.ok) return null;
+      const t = (await r.text()).trim();
+      return t.length ? t : null;
+    } catch {
+      return null;
+    }
+  },
+
+  /** Convierte un texto en párrafos respetando sus saltos de línea. */
+  pintaParrafos(destino, texto) {
+    destino.textContent = '';
+    const partes = texto.split(/\n{2,}/).map((x) => x.trim()).filter(Boolean);
+    partes.forEach((parrafo, i) => {
+      const p = document.createElement('p');
+      parrafo.split('\n').forEach((linea, j) => {
+        if (j) p.appendChild(document.createElement('br'));
+        p.appendChild(document.createTextNode(linea));
+      });
+      // Un último párrafo corto se lee como una despedida.
+      if (i === partes.length - 1 && partes.length > 1 && parrafo.length < 70) {
+        p.classList.add('despedida');
+      }
+      destino.appendChild(p);
+    });
+    return partes.length;
   },
 
   aplicarPaleta() {
@@ -67,27 +100,12 @@ const SIEMPRE = {
       : this.rutaGrande(obj.id);
   },
 
-  /* ── Cartas ── */
+  /* ── Cartas de cada etapa ── */
   async carta(id) {
-    if (id in this.textos) return this.textos[id];
-    let texto = null;
-    try {
-      const r = await fetch(`contenido/textos/${id}.txt`, { cache: 'no-cache' });
-      if (r.ok) {
-        const t = (await r.text()).trim();
-        texto = t.length ? t : null;
-      }
-    } catch { /* sin carta todavía: la etapa sigue funcionando */ }
-    this.textos[id] = texto;
-    return texto;
+    if (!(id in this.textos)) {
+      this.textos[id] = await this.leeTexto(`contenido/textos/${id}.txt`);
+    }
+    return this.textos[id];
   },
 
-  /* ── Música ── */
-  cancion(id) {
-    const e = this.etapa(id);
-    if (!e || !e.cancion) return null;
-    const c = e.cancion;
-    const tieneFuente = (c.youtube && c.youtube.trim()) || (c.archivo && c.archivo.trim());
-    return tieneFuente ? c : null;
-  },
 };

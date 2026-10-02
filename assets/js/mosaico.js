@@ -31,7 +31,6 @@ SIEMPRE.mosaico = (() => {
   let vertical = false;
   let vista = 'lejos';
   let enfocada = null;          // letra dominante ahora mismo
-  let relojEnfoque = null;
   let observador = null;
   const aLaVista = new Set();
   let finoAhora = false;
@@ -294,14 +293,6 @@ SIEMPRE.mosaico = (() => {
     if (L === enfocada) return;
     enfocada = L;
     letras.forEach((x) => x.nodo.classList.toggle('mirada', x === L));
-    clearTimeout(relojEnfoque);
-    if (L && SIEMPRE.audio.arrancaEn() === 'mosaico') {
-      // Un momento de calma antes de cambiar de canción, para que un
-      // movimiento mínimo no alterne entre dos pistas.
-      relojEnfoque = setTimeout(() => {
-        if (enfocada === L) SIEMPRE.audio.pon(L.etapa.id);
-      }, 900);
-    }
   }
 
   function colocarRotulo() {

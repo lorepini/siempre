@@ -11,17 +11,32 @@
 </head>
 <body>
 
-<!-- ───── Puerta de entrada ───── -->
-<div id="puerta" class="puerta">
-  <div class="puerta__caja">
-    <p class="puerta__frase" id="puertaFrase"></p>
-    <p class="puerta__intro" id="puertaIntro"></p>
-    <div class="puerta__botones">
-      <button type="button" id="btnConMusica" class="boton boton--principal">Empezar con música</button>
-      <button type="button" id="btnSinMusica" class="boton">Explorar sin sonido</button>
-    </div>
-    <p class="puerta__nota" id="puertaIndicacion"></p>
+<!-- ───── Entrada: el sobre y la carta ───── -->
+<div id="entrada" class="entrada">
+
+  <div id="sobreEscena" class="sobre-escena">
+    <p class="sobre__para" id="sobrePara"></p>
+    <button type="button" id="sobre" class="sobre">
+      <span class="sobre__hoja" aria-hidden="true"></span>
+      <span class="sobre__frente" aria-hidden="true"></span>
+      <span class="sobre__solapa" aria-hidden="true"></span>
+      <span class="sobre__sello" aria-hidden="true"></span>
+      <span class="oculto" id="sobreEtiqueta">Abrir la carta</span>
+    </button>
+    <p class="sobre__pista" id="sobrePista"></p>
   </div>
+
+  <article id="cartaEntrada" class="carta-entrada" hidden tabindex="-1" aria-label="Carta">
+    <div class="carta-entrada__hoja">
+      <h1 class="carta-entrada__titulo" id="cartaEntradaTitulo"></h1>
+      <div class="carta-entrada__cuerpo" id="cartaEntradaCuerpo"></div>
+      <p class="carta-entrada__firma" id="cartaEntradaFirma"></p>
+      <div class="carta-entrada__pie">
+        <button type="button" class="boton boton--principal" id="verRegalo">Ver regalo</button>
+      </div>
+    </div>
+  </article>
+
 </div>
 
 <!-- ───── Mosaico ───── -->
@@ -43,7 +58,7 @@
     <button type="button" id="btnAcercar" class="icono" aria-label="Acercar">+</button>
     <button type="button" id="btnVerTodo" class="icono icono--ancho">Ver todo</button>
     <button type="button" id="btnEtapas" class="icono icono--ancho" aria-haspopup="true" aria-expanded="false">Etapas</button>
-    <button type="button" id="btnSonido" class="icono" aria-label="Sonido" aria-pressed="false">♪</button>
+    <button type="button" id="btnCarta" class="icono icono--ancho">Carta</button>
   </div>
 
   <!-- Acceso a las etapas sin depender del zoom -->
@@ -60,12 +75,6 @@
       <span class="album__letra" id="albumLetra"></span>
       <span class="album__titulo" id="albumTitulo"></span>
       <span class="album__fechas" id="albumFechas"></span>
-    </div>
-    <div class="album__musica" id="albumMusica" hidden>
-      <button type="button" id="musicaPlay" class="icono" aria-label="Reproducir o pausar">▶</button>
-      <span class="album__pista" id="musicaPista"></span>
-      <button type="button" id="musicaMute" class="icono" aria-label="Silenciar">🔇</button>
-      <input type="range" id="musicaVolumen" min="0" max="100" step="1" aria-label="Volumen">
     </div>
   </header>
 
@@ -106,10 +115,7 @@
   </div>
 </section>
 
-<div id="reproductorAudio" class="oculto" aria-hidden="true"></div>
-
 <script src="assets/js/datos.js"></script>
-<script src="assets/js/audio.js"></script>
 <script src="assets/js/mosaico.js"></script>
 <script src="assets/js/visor.js"></script>
 <script src="assets/js/album.js"></script>

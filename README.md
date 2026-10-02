@@ -2,9 +2,10 @@
 
 Siete letras para siete etapas de los siete años que ya hemos compartido.
 
-De lejos se lee SIEMPRE. Al acercarse, las letras resultan estar construidas
-con fotografías. Al tocar una letra se entra en su etapa: su carta, sus fotos
-y su música.
+El regalo llega cerrado, en un sobre. Al abrirlo aparece la carta, y al final
+de la carta se entra al regalo: de lejos se lee SIEMPRE, y al acercarse las
+letras resultan estar construidas con fotografías. Al tocar una letra se entra
+en su etapa.
 
 Las dos **E** son etapas distintas y tienen identificadores propios
 (`etapa-03` y `etapa-07`). Nada se relaciona por la letra, siempre por el
@@ -19,9 +20,8 @@ cual en cualquier navegador y se publica copiando la carpeta. Las fotografías
 se preparan antes con dos guiones de Python.
 
 Se eligió así porque el contenido es estático y cabe entero en archivos, no
-hacía falta un servidor ni un armazón que envejezca. La única pieza externa
-es el reproductor de YouTube, y sólo se carga si hay alguna canción puesta
-y ella pide música.
+hacía falta un servidor ni un armazón que envejezca. No hay ninguna pieza
+externa: la web no contacta con ningún tercero.
 
 ```
 SIEMPRE/
@@ -29,15 +29,14 @@ SIEMPRE/
   assets/css/siempre.css
   assets/js/
     datos.js      carga y acceso al contenido
-    audio.js      música por etapa (YouTube o archivos)
     mosaico.js    la palabra, el zoom y el desplazamiento
-    album.js      carta + galería de cada etapa
+    album.js      galería (y carta opcional) de cada etapa
     visor.js      la fotografía a pantalla completa
-    app.js        une todo y gobierna el botón Atrás
+    app.js        el sobre, el recorrido y el botón Atrás
   contenido/      LO QUE TÚ EDITAS
     etapas.json     configuración central de las siete etapas
-    textos/         una carta por etapa
-    musica/         mp3 propios, si algún día los hay
+    carta.txt       la carta de la portada (se publica)
+    textos/         una carta por etapa, opcionales (no se publican)
   datos/          generado: no se edita a mano
     fotos.json      inventario de fotografías
     mosaico.json    coordenadas de las teselas de cada letra

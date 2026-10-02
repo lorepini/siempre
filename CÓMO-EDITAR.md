@@ -1,111 +1,117 @@
 # Cómo cambiar el contenido de SIEMPRE
 
-Nada de esto exige tocar el código. Después de cualquier cambio de los que
-aparecen aquí, basta con volver a subir el proyecto.
+Nada de esto exige tocar el código. Después de cualquier cambio:
 
-## 1. Poner nombre y fechas a cada etapa
+```bash
+git add -A && git commit -m "lo que has cambiado" && git push
+```
 
-Abre `contenido/etapas.json` y rellena `nombre` y `fechas` de cada etapa:
+y en un minuto está en línea.
+
+## El recorrido
+
+Un sobre cerrado → la carta → el botón «Ver regalo» → las siete letras hechas
+con vuestras fotos. Desde el mosaico, el botón «Carta» vuelve a abrirla.
+
+## 1. La carta de la portada
+
+Está en **`contenido/carta.txt`**. Texto normal, en UTF-8. Se respetan tus
+párrafos y tus saltos de línea: un párrafo nuevo es una línea en blanco.
+
+Si el último párrafo es corto, se muestra como despedida, en el color de
+acento y algo más grande. Así se lee ahora «Tu y yo siempre.»
+
+> **Esta carta se publica.** Es lo primero que se ve al abrir el enlace, así
+> que cualquiera que lo tenga puede leerla. Es lo que decidiste, pero conviene
+> tenerlo presente cada vez que la edites.
+
+## 2. El sobre
+
+En `contenido/etapas.json`, dentro de `proyecto.entrada`:
+
+- `para` — lo que se lee encima del sobre («Para Sapito»)
+- `pista` — la línea pequeña de debajo («Ábrelo»)
+- `tituloCarta` — un encabezado opcional para la carta; vacío, no aparece
+- `firmaCarta` — una firma opcional al pie
+- `botonRegalo` — el texto del botón («Ver regalo»)
+
+La letra del sello es la **S** de SIEMPRE y se cambia en
+`assets/css/siempre.css`, en `.sobre__sello::after`.
+
+## 3. Nombres y fechas de las etapas
+
+En `contenido/etapas.json`, en cada etapa:
 
 ```json
 { "id": "etapa-01", "orden": 1, "letra": "S", "nombre": "Los comienzos", "fechas": "2018 – 2019", ... }
 ```
 
-Las fechas son opcionales: si las dejas vacías, no aparece nada.
-Mientras `nombre` esté vacío, la web muestra «Etapa 1».
+Las fechas son opcionales. Mientras `nombre` esté vacío, se muestra «Etapa 1».
 
 **No cambies `id` ni `letra`.** Las dos E tienen identificadores distintos
 (`etapa-03` y `etapa-07`) y de eso depende que sus contenidos no se mezclen.
 
-## 2. Escribir las cartas
+## 4. Cartas por etapa (opcionales)
 
-Una carta por etapa, en `contenido/textos/`:
+Además de la carta de la portada, cada etapa puede tener la suya, en
+`contenido/textos/etapa-01.txt` … `etapa-07.txt`.
 
-- `etapa-01.txt` … `etapa-07.txt`
-- Texto normal, en UTF-8. Se respetan tus párrafos y tus saltos de línea.
-- Un párrafo nuevo = una línea en blanco entre medias.
-- Mientras el archivo esté vacío, la web avisa de que la carta está pendiente,
-  sin inventarse nada.
+**Si el archivo está vacío, la etapa es solo sus fotos** y no aparece ningún
+hueco anunciando una carta que no está. Ahora mismo los siete están vacíos.
 
-Por defecto la carta aparece **al principio** de la etapa y las fotos después.
-Si algún día prefieres lo contrario, cambia en `contenido/etapas.json`:
-`"album": { "cartaPosicion": "final" }`.
+Estos archivos **no se suben a internet**: están excluidos en `.gitignore`.
+Si algún día quieres publicarlos, hay que quitar esa línea, y antes conviene
+pensar si el alojamiento abierto sigue siendo lo que quieres.
 
-El título de todas las cartas se cambia en `"tituloCarta"`.
+Con `album.cartaPosicion` eliges si la carta de la etapa va antes (`"inicio"`)
+o después (`"final"`) de las fotos. `album.tituloCarta` les pone un
+encabezado común a todas.
 
-## 3. Poner la música
+## 5. El final del recorrido
 
-Una canción por etapa. Lo más sencillo es un enlace de YouTube:
+En `proyecto.cierre`, `titulo` y `texto`. Mientras estén vacíos, la etapa 7
+simplemente termina. En cuanto escribas algo, aparece el botón «Final del
+recorrido» al pie de la séptima etapa.
 
-```json
-"cancion": {
-  "titulo": "Nombre de la canción",
-  "artista": "Quien la canta",
-  "youtube": "https://www.youtube.com/watch?v=XXXXXXXXXXX",
-  "archivo": ""
-}
-```
+`proyecto.mosaico.indicacion` es la línea bajo las letras.
 
-Vale cualquiera de estos formatos: el enlace largo, el corto `youtu.be/…`
-o sólo el identificador.
+## 6. Colores y tipografía
 
-Si algún día tienes archivos propios (sin derechos de terceros), déjalos en
-`contenido/musica/`, pon el nombre del archivo en `"archivo"` y cambia
-`"audio": { "motor": "archivo" }`.
-
-Cuándo empieza a sonar se controla con `"arrancaEn"`:
-
-- `"fotos"` — al pasar de la carta a las fotografías *(lo que hay puesto)*
-- `"album"` — nada más entrar en la etapa
-- `"mosaico"` — al acercarse a la letra, sin entrar
-
-Una etapa sin canción funciona igual, simplemente sin música.
-
-## 4. Textos de la portada y del final
-
-En `contenido/etapas.json`, dentro de `"proyecto"`:
-
-- `portada.frase` — el texto grande de entrada
-- `portada.indicacion` — la línea pequeña bajo el mosaico
-- `portada.textoIntro` — un párrafo opcional en la portada
-- `cierre.titulo` y `cierre.texto` — el final del recorrido
-
-Mientras `cierre` esté vacío, la etapa 7 termina sin pantalla de cierre. En
-cuanto escribas algo ahí, aparece el botón «Final del recorrido».
-
-`firma` es lo que se ve al pie de cada carta.
-
-## 5. Colores y tipografía
-
-En `"aspecto"`. Todo es editable: fondo, tinta, acento, tipografías.
+En `aspecto`. Todo editable: fondo, tinta, acento, tipografías.
 `veloColorLejos` tiñe suavemente el mosaico visto de lejos; con `0` está apagado.
 
-## 6. Elegir qué fotos forman cada letra
+## 7. Qué fotos forman cada letra
 
 El reparto lo hace el programa y es estable: al recargar no cambia.
 
-- `favoritas`: lista de identificadores que **siempre** entran en la letra.
-- `excluirDelMosaico`: fotos que no quieres ver en la letra (siguen en el álbum).
-- `mosaico.semilla`: cambia el número y sale otro reparto distinto.
-- `mosaico.teselasObjetivo`: cuántas fotos por letra, aproximadamente.
+- `favoritas` — identificadores que **siempre** entran en la letra
+- `excluirDelMosaico` — fotos que no quieres en la letra (siguen en el álbum)
+- `mosaico.semilla` — cambia el número y sale otro reparto
+- `mosaico.teselasObjetivo` — cuántas fotos por letra, aproximadamente
 
-Los identificadores tienen la forma `etapa-04-0017` y están en `datos/fotos.json`.
-
-Después de tocar cualquiera de estos cuatro, hay que regenerar el mosaico:
+Los identificadores son del tipo `etapa-04-0017` y están en `datos/fotos.json`.
+Después de tocar cualquiera de esos cuatro:
 
 ```bash
 python3 herramientas/02_generar_mosaico.py
 ```
 
-## 7. Añadir o quitar fotografías
+## 8. Añadir o quitar fotografías
 
-Las fotos originales viven en `../PHOTOS/`, en las carpetas `18-19` … `25-26`.
-Añade o quita ahí y vuelve a ejecutar:
+Las originales están en la carpeta que indica `origenFotos` en
+`contenido/etapas.json`. Añade o quita ahí y vuelve a ejecutar:
 
 ```bash
-python3 herramientas/01_preparar_fotos.py    # prepara las copias para la web
+python3 herramientas/01_preparar_fotos.py    # copias para la web
 python3 herramientas/02_generar_mosaico.py   # recalcula las letras
 ```
 
 Los originales no se tocan nunca. Los duplicados exactos se detectan solos y
-no se copian, pero tampoco se borran de su carpeta.
+no se copian, pero tampoco se borran.
+
+## 9. ¿Y la música?
+
+Se quitó a propósito: el regalo va en silencio. El código que la hacía
+funcionar (una canción por etapa, con enlaces de YouTube) sigue en el
+historial de git, en el commit anterior a su retirada, por si algún día
+la quieres de vuelta.

@@ -17,42 +17,23 @@ SIEMPRE.album = (() => {
   const cartaSeguir = document.getElementById('cartaSeguir');
   const btnSiguiente = document.getElementById('albumSiguiente');
   const btnIrCarta = document.getElementById('irCarta');
-  const cajaMusica = document.getElementById('albumMusica');
-  const musicaPlay = document.getElementById('musicaPlay');
-  const musicaPista = document.getElementById('musicaPista');
-  const musicaMute = document.getElementById('musicaMute');
-  const musicaVolumen = document.getElementById('musicaVolumen');
 
   let etapaActual = null;
   let fotosActuales = [];
   let observador = null;
-  let vigilanteMusica = null;
   let manejadores = {};
 
   const cartaAlPrincipio = () => (SIEMPRE.cfg.album?.cartaPosicion || 'inicio') !== 'final';
 
-  /* ── Carta ── */
+  /* ── Carta de la etapa ──
+     Sólo existe si la has escrito. Si no hay texto, la etapa es sus fotos y
+     ya está: no se enseña un hueco anunciando algo que no está. */
   function pintaCarta(etapa, texto) {
-    cartaTitulo.textContent = SIEMPRE.cfg.album?.tituloCarta || 'Lo que quiero decirte de esta etapa';
-    cartaCuerpo.textContent = '';
-    if (texto) {
-      // Respeta los párrafos y los saltos de línea tal y como los escribiste.
-      texto.split(/\n{2,}/).forEach((parrafo) => {
-        const p = document.createElement('p');
-        parrafo.split('\n').forEach((linea, i) => {
-          if (i) p.appendChild(document.createElement('br'));
-          p.appendChild(document.createTextNode(linea));
-        });
-        cartaCuerpo.appendChild(p);
-      });
-    } else {
-      const p = document.createElement('p');
-      p.className = 'pendiente';
-      p.textContent = SIEMPRE.cfg.album?.cartaPendiente
-        || 'Esta carta todavía está por escribir.';
-      cartaCuerpo.appendChild(p);
-    }
+    if (!texto) return false;
+    cartaTitulo.textContent = SIEMPRE.cfg.album?.tituloCarta || '';
+    SIEMPRE.pintaParrafos(cartaCuerpo, texto);
     cartaFirma.textContent = SIEMPRE.cfg.proyecto?.firma || '';
+    return true;
   }
 
   /* ── Galería ── */
@@ -106,44 +87,6 @@ SIEMPRE.album = (() => {
     galeria.querySelectorAll('img').forEach((i) => observador.observe(i));
   }
 
-  /* ── Música de la etapa ── */
-  function preparaMusica(etapa) {
-    const c = SIEMPRE.cancion(etapa.id);
-    cajaMusica.hidden = !c;
-    if (!c) return;
-    const partes = [c.titulo, c.artista].filter(Boolean);
-    musicaPista.textContent = partes.join(' · ');
-    musicaPista.title = partes.join(' · ');
-
-    vigilanteMusica?.();
-    vigilanteMusica = SIEMPRE.audio.escucha((s) => {
-      musicaPlay.textContent = s.pausada ? '▶' : '❚❚';
-      musicaPlay.setAttribute('aria-label', s.pausada ? 'Reproducir' : 'Pausar');
-      musicaMute.textContent = s.silenciado ? '🔇' : '🔊';
-      musicaMute.setAttribute('aria-pressed', String(s.silenciado));
-      if (document.activeElement !== musicaVolumen) musicaVolumen.value = Math.round(s.volumen * 100);
-    });
-  }
-
-  /** La música arranca donde diga la configuración, siempre tras un gesto suyo. */
-  function arrancaMusicaSiToca(momento) {
-    if (!etapaActual) return;
-    if (SIEMPRE.audio.arrancaEn() === momento) SIEMPRE.audio.pon(etapaActual.id);
-  }
-
-  function vigilarLlegadaALasFotos() {
-    if (SIEMPRE.audio.arrancaEn() !== 'fotos') return;
-    const centinela = galeria.firstElementChild;
-    if (!centinela) return;
-    const obs = new IntersectionObserver((entradas) => {
-      if (entradas.some((e) => e.isIntersecting)) {
-        obs.disconnect();
-        arrancaMusicaSiToca('fotos');
-      }
-    }, { root: caja, threshold: .12 });
-    obs.observe(centinela);
-  }
-
   /* ── Apertura y cierre ── */
   async function abrir(etapaId, acciones) {
     const etapa = SIEMPRE.etapa(etapaId);
@@ -173,34 +116,31 @@ SIEMPRE.album = (() => {
       delete btnSiguiente.dataset.destino;
     }
 
-    // Orden de la página: carta y luego fotos, o al revés, según configuración.
-    if (cartaAlPrincipio()) {
+    const hayCarta = pintaCarta(etapa, await SIEMPRE.carta(etapa.id));
+    carta.hidden = !hayCarta;
+    if (hayCarta && cartaAlPrincipio()) {
       caja.insertBefore(carta, galeria);
       cartaSeguir.hidden = false;
       btnIrCarta.hidden = true;
-    } else {
+    } else if (hayCarta) {
       caja.insertBefore(galeria, carta);
       cartaSeguir.hidden = true;
       btnIrCarta.hidden = false;
+    } else {
+      cartaSeguir.hidden = true;
+      btnIrCarta.hidden = true;
     }
 
-    pintaCarta(etapa, await SIEMPRE.carta(etapa.id));
     pintaGaleria(etapa);
-    preparaMusica(etapa);
 
     caja.hidden = false;
     caja.scrollTop = 0;
     document.body.classList.add('con-album');
     caja.focus({ preventScroll: true });
-
-    arrancaMusicaSiToca('album');
-    vigilarLlegadaALasFotos();
   }
 
   function cerrar() {
     observador?.disconnect();
-    vigilanteMusica?.();
-    vigilanteMusica = null;
     caja.hidden = true;
     document.body.classList.remove('con-album');
     etapaActual = null;
@@ -217,18 +157,8 @@ SIEMPRE.album = (() => {
 
   cartaSeguir.addEventListener('click', () => {
     galeria.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    arrancaMusicaSiToca('fotos');
   });
   btnIrCarta.addEventListener('click', () => carta.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-
-  musicaPlay.addEventListener('click', () => {
-    SIEMPRE.audio.permite(true);
-    const s = SIEMPRE.audio.estado();
-    if (s.pausada && s.etapa !== etapaActual?.id) SIEMPRE.audio.pon(etapaActual.id);
-    else SIEMPRE.audio.alterna();
-  });
-  musicaMute.addEventListener('click', () => SIEMPRE.audio.silencia());
-  musicaVolumen.addEventListener('input', () => SIEMPRE.audio.volumen(musicaVolumen.value / 100));
 
   btnSiguiente.addEventListener('click', () => {
     const destino = btnSiguiente.dataset.destino;
