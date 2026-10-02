@@ -56,8 +56,10 @@ Las fechas son opcionales. Mientras `nombre` esté vacío, se muestra «Etapa 1�
 Además de la carta de la portada, cada etapa puede tener la suya, en
 `contenido/textos/etapa-01.txt` … `etapa-07.txt`.
 
-**Si el archivo está vacío, la etapa es solo sus fotos** y no aparece ningún
-hueco anunciando una carta que no está. Ahora mismo los siete están vacíos.
+Para que la web las busque, pon `album.cartasPorEtapa` en `true`. Ahora está
+en `false` y los siete archivos están vacíos: cada etapa es solo sus fotos.
+
+**Si un archivo está vacío, esa etapa no muestra hueco de carta.**
 
 Estos archivos **no se suben a internet**: están excluidos en `.gitignore`.
 Si algún día quieres publicarlos, hay que quitar esa línea, y antes conviene

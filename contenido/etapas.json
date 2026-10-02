@@ -130,8 +130,9 @@
     }
   ],
   "album": {
-    "_nota": "cartaPosicion: 'inicio' = la carta de la etapa antes de las fotos; 'final' = después. Si una etapa no tiene carta escrita, su sección no aparece.",
+    "_nota": "cartasPorEtapa: ponlo en true cuando escribas cartas en contenido/textos/. Con false ni se buscan. cartaPosicion: 'inicio' = antes de las fotos; 'final' = después.",
     "cartaPosicion": "inicio",
-    "tituloCarta": ""
+    "tituloCarta": "",
+    "cartasPorEtapa": false
   }
 }

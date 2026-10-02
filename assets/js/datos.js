@@ -100,8 +100,11 @@ const SIEMPRE = {
       : this.rutaGrande(obj.id);
   },
 
-  /* ── Cartas de cada etapa ── */
+  /* ── Cartas de cada etapa ──
+     Son opcionales. Si no las usas, ni se buscan: así no queda un 404
+     dando vueltas por la consola del navegador. */
   async carta(id) {
+    if (!this.cfg.album?.cartasPorEtapa) return null;
     if (!(id in this.textos)) {
       this.textos[id] = await this.leeTexto(`contenido/textos/${id}.txt`);
     }
