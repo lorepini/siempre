@@ -87,7 +87,16 @@ img { max-width: 100%; display: block; }
   transition: background .2s, color .2s;
 }
 .icono:hover { background: #fff; }
-.icono--ancho { padding: 0 1.05em; font-size: .86rem; letter-spacing: .03em; }
+.icono--ancho { padding: 0 1.05em; font-size: .86rem; letter-spacing: .03em; white-space: nowrap; }
+
+/* Teléfonos estrechos (iPhone SE y parecidos): los cinco controles caben en
+   una fila apretando el espaciado, sin bajar de los 44px de alto que necesita
+   un dedo. */
+@media (max-width: 400px) {
+  .controles { gap: .28rem; padding: .28rem; }
+  .icono { min-width: 40px; padding: 0 .4em; }
+  .icono--ancho { padding: 0 .62em; font-size: .76rem; letter-spacing: .01em; }
+}
 .icono[aria-pressed="true"] { background: var(--acento); border-color: var(--acento); color: #FFF8F2; }
 
 /* ───────── Puerta de entrada ───────── */
@@ -185,6 +194,7 @@ img { max-width: 100%; display: block; }
 .rotulo {
   position: absolute; z-index: 20;
   transform: translate(-50%, 0);
+  width: max-content;
   display: grid; gap: .45rem; justify-items: center;
   padding: .9rem 1.2rem;
   background: rgba(255, 253, 250, .93);
@@ -207,22 +217,29 @@ img { max-width: 100%; display: block; }
 .rotulo__nombre:empty { display: none; }
 
 /* ───────── Indicación y controles ───────── */
+/* Nota: 'left: 50%' + translateX deja al elemento sólo la mitad derecha de
+   la pantalla como espacio disponible, y el texto se parte antes de tiempo.
+   Con left/right a 0 y margen automático se centra igual, con todo el ancho. */
 .indicacion {
-  position: absolute; left: 50%; transform: translateX(-50%);
+  position: absolute; left: 0; right: 0;
+  width: fit-content; margin-inline: auto;
   bottom: calc(92px + var(--seguro-abajo));
-  margin: 0; padding: 0 20px;
+  margin-block: 0; padding: 0 20px;
   font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
   color: var(--tinta-suave);
   text-align: center; pointer-events: none;
   transition: opacity .5s ease;
-  max-width: 92vw;
+  max-width: min(92vw, 34rem);
 }
 .indicacion.callada { opacity: 0; }  /* se apaga pero conserva su hueco */
 
 .controles {
-  position: absolute; left: 50%; transform: translateX(-50%);
+  position: absolute; left: 0; right: 0;
+  width: fit-content; margin-inline: auto;
   bottom: calc(20px + var(--seguro-abajo));
   display: flex; gap: .45rem; align-items: center;
+  /* En una pantalla estrecha prefiero dos filas antes que un botón cortado */
+  flex-wrap: wrap; justify-content: center; row-gap: .35rem;
   padding: .35rem;
   background: rgba(255, 253, 250, .72);
   backdrop-filter: blur(14px);
@@ -233,7 +250,8 @@ img { max-width: 100%; display: block; }
 }
 
 .lista-etapas {
-  position: absolute; left: 50%; transform: translateX(-50%);
+  position: absolute; left: 0; right: 0;
+  width: fit-content; margin-inline: auto;
   bottom: calc(80px + var(--seguro-abajo));
   z-index: 30;
   background: rgba(255, 253, 250, .96);

@@ -73,8 +73,16 @@ Todas las copias salen sin metadatos, coordenadas GPS incluidas.
 python3 herramientas/01_preparar_fotos.py    # copias para la web (unos 4 min)
 python3 herramientas/02_generar_mosaico.py   # coordenadas de las letras
 python3 herramientas/comprobar_js.py         # sintaxis del JavaScript
-python3 herramientas/probar_web.py           # recorre la web en un navegador
+python3 herramientas/probar_web.py           # recorre la web en Chromium
+source herramientas/entorno_webkit.sh && \
+  python3 herramientas/probar_iphone.py      # recorre la web en WebKit, con pantallas de iPhone
 ```
+
+`probar_iphone.py` usa WebKit, el motor de Safari, con el tamaño y el modo
+táctil de un iPhone SE, un 13 y un 14 Pro Max. **No es un iPhone de verdad:**
+detecta lo que depende del motor (transformaciones 3D, `clip-path`, zonas
+seguras, eventos de puntero) pero no el hardware táctil, la barra de
+direcciones de Safari ni el rendimiento del aparato.
 
 `02_generar_mosaico.py` usa Arial Black únicamente para calcular el molde de
 las letras. La tipografía no se distribuye con la web: lo que viaja al
