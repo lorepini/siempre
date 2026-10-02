@@ -81,7 +81,8 @@ SIEMPRE.album = (() => {
         img.addEventListener('load', () => img.classList.add('puesta'), { once: true });
         // Si una foto no llega (conexión lenta, archivo dañado), se queda un
         // hueco neutro del tamaño correcto, nunca el icono de imagen rota.
-        img.addEventListener('error', () => b.classList.add('fallo'), { once: true });
+        img.addEventListener('error',
+          () => img.closest('.galeria__foto')?.classList.add('fallo'), { once: true });
       });
     }, { root: caja, rootMargin: '600px' });
     galeria.querySelectorAll('img').forEach((i) => observador.observe(i));
